@@ -1,0 +1,11 @@
+[versions]
+kotlin = "2.2.20"
+ksoup = "0.6.0"
+vanniktech-publish = "0.30.0"
+
+[libraries]
+ksoup-html = { module = "com.mohamedrejeb.ksoup:ksoup-html", version.ref = "ksoup" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+vanniktech-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-publish" }
