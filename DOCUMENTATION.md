@@ -80,17 +80,18 @@ When writing custom rules, you interact primarily with `KElement` and `Conversio
 `ConversionContext` holds the state of the current conversion process and provides utility methods.
 
 - **`options`**: Access to the global `ConverterOptions`.
-- **`listType`**: The current list context (`NONE`, `UNORDERED`, `ORDERED`).
-- **`indentLevel`**: The current indentation depth (used for nested lists).
-- **`inTable`**: Boolean indicating if we are currently processing inside a table.
+- **`BuiltInContextKeys`**: Access to standard state keys (`ListType`, `IndentLevel`, `InTable`).
 
 **Key Methods:**
 
 - **`processChildren(element: KElement): String`**:
-  This is the most important method. It recursively processes all children of the given element using the registered rules and returns the combined Markdown string. You should almost always call this in your custom rules unless you want to suppress the element's content.
+  This is the most important method. It recursively processes all children of the given element using the registered rules and returns the combined Markdown string.
 
-- **`subContext(...)`**:
-  Creates a new context for processing children with modified state (e.g., increasing indent, entering a table).
+- **`get(key: ContextDataKey<T>): T?`**:
+  Retrieves data associated with a key.
+
+- **`with(key: ContextDataKey<T>, value: T): ConversionContext`**:
+  Creates a new context with the updated key-value pair.
 
 ---
 
@@ -145,12 +146,13 @@ If you have a `div` with a specific class that should be treated as a code block
 
 ### Example 4: Nested Contexts
 
-If you are implementing a custom structure that requires indentation (like a custom list), you can use `subContext`.
+If you are implementing a custom structure that requires indentation (like a custom list), you can use `with` and `BuiltInContextKeys`.
 
 ```kotlin
 .rule("custom-list") { element, context ->
     // Create a context with increased indentation
-    val newContext = context.subContext(incrementIndent = true)
+    val currentIndent = context.get(ConversionContext.BuiltInContextKeys.IndentLevel) ?: 0
+    val newContext = context.with(ConversionContext.BuiltInContextKeys.IndentLevel, currentIndent + 1)
     val content = newContext.processChildren(element)
     "\n$content"
 }
@@ -158,11 +160,22 @@ If you are implementing a custom structure that requires indentation (like a cus
 
 ---
 
-## Custom Context Data
+## Context Data & State Management
 
-For more complex rules, you might need to pass state down the tree (e.g., "am I inside a blockquote?", "what is the current font size?"). You can use `ContextDataKey` for this.
+The `ConversionContext` uses a flexible key-value storage system to manage state. This is the same mechanism used by built-in rules (e.g., to track list nesting or table context). You can use it to pass your own state down the DOM tree.
 
-### 1. Define a Key
+### Built-in Keys
+
+The library provides standard keys in `ConversionContext.BuiltInContextKeys`:
+- `ListType`: Tracks if we are inside an unordered or ordered list.
+- `IndentLevel`: Tracks the current nesting depth.
+- `InTable`: Tracks if we are inside a table.
+
+### Custom Keys
+
+For your own rules, you can define custom keys to track application-specific state (e.g., "inside blockquote", "current font size").
+
+#### 1. Define a Key
 
 Create a key object. The type parameter ensures type safety.
 

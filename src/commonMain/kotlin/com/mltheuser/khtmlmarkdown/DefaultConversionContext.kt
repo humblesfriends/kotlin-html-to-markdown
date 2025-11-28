@@ -17,24 +17,8 @@ import com.mltheuser.khtmlmarkdown.utils.MarkdownStringBuilder
 internal data class DefaultConversionContext(
         private val registry: RuleRegistry,
         override val options: ConverterOptions,
-        override val listType: ListType = ListType.NONE,
-        override val indentLevel: Int = 0,
-        override val inTable: Boolean = false,
         private val customData: Map<ContextDataKey<*>, Any> = emptyMap()
 ) : ConversionContext {
-
-    override fun subContext(
-            listType: ListType?,
-            incrementIndent: Boolean,
-            inTable: Boolean?
-    ): ConversionContext {
-        return this.copy(
-                listType = listType ?: this.listType,
-                indentLevel = if (incrementIndent) this.indentLevel + 1 else this.indentLevel,
-                inTable = inTable ?: this.inTable,
-                customData = this.customData
-        )
-    }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> get(key: ContextDataKey<T>): T? {
@@ -103,6 +87,7 @@ internal data class DefaultConversionContext(
      */
     private fun cleanText(text: String): String {
         val collapsed = text.replace("\\s+".toRegex(), " ")
+        val inTable = get(ConversionContext.BuiltInContextKeys.InTable) ?: false
         return MarkdownEscaper.escape(collapsed, inTable = inTable)
     }
 }

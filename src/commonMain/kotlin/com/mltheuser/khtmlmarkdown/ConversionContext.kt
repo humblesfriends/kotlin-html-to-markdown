@@ -43,16 +43,16 @@ public class ContextDataKey<T>(public val name: String) {
  */
 public interface ConversionContext {
     /** Global configuration options for the converter. */
-    val options: ConverterOptions // New property
+    val options: ConverterOptions
 
-    /** The type of list currently being processed, if any. */
-    val listType: ListType
-
-    /** The current indentation level (depth of nesting). */
-    val indentLevel: Int
-
-    /** Whether the processing is currently inside a table. */
-    val inTable: Boolean
+    /**
+     * Built-in keys for standard context state.
+     */
+    public object BuiltInContextKeys {
+        public val ListType: ContextDataKey<com.mltheuser.khtmlmarkdown.ListType> = ContextDataKey("ListType")
+        public val IndentLevel: ContextDataKey<Int> = ContextDataKey("IndentLevel")
+        public val InTable: ContextDataKey<Boolean> = ContextDataKey("InTable")
+    }
 
     /**
      * Processes the children of the given element and returns their combined Markdown
@@ -62,20 +62,6 @@ public interface ConversionContext {
      * @return The resulting Markdown string.
      */
     fun processChildren(element: KElement): String
-
-    /**
-     * Creates a new context based on the current one, but with modified state.
-     *
-     * @param listType The new list type, or null to keep the current one.
-     * @param incrementIndent Whether to increment the indentation level.
-     * @param inTable The new table state, or null to keep the current one.
-     * @return A new [ConversionContext] instance.
-     */
-    fun subContext(
-            listType: ListType? = null,
-            incrementIndent: Boolean = false,
-            inTable: Boolean? = null
-    ): ConversionContext
 
     /**
      * Retrieves custom data associated with the given key.

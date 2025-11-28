@@ -11,7 +11,7 @@ import com.mltheuser.khtmlmarkdown.dom.KElement
 public object TableRule : ConversionRule {
     override fun convert(element: KElement, context: ConversionContext): String {
         // Enter table context
-        val newContext = context.subContext(inTable = true)
+        val newContext = context.with(ConversionContext.BuiltInContextKeys.InTable, true)
         val content = newContext.processChildren(element).trim()
         if (content.isEmpty()) return ""
         return "\n\n" + content + "\n\n"
